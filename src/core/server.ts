@@ -19,7 +19,7 @@ export class Server {
 
     async start() : Promise<void> {
 
-        this.app.locals.ogImageUrl = null;
+    
 
         this.app.use(Express.json())
         this.app.use(Express.urlencoded({ extended: true }))
@@ -31,12 +31,17 @@ export class Server {
   
         this.app.use("/", (req: Request, res: Response, next: NextFunction ) => {
             if(req.url != "/") return next();
-            res.render("index", {})
+            console.log(req.url);
+            res.render("index", { ogImageUrl: process.env.OG_DEFAULT_IMAGE_URL })
         }); 
 
         this.app.use("/:name.mon", (req: Request, res: Response, next: NextFunction ) => {
             console.log(req.params.name)
             console.log(getTokenId(req.params.name))
+            res.render("index", { ogImageUrl: process.env.OG_IMAGE_URL?.replace("{tokenId}", getTokenId(req.params.name)) })
+        }); 
+
+        this.app.use("/register/:name.mon", (req: Request, res: Response, next: NextFunction ) => {
             res.render("index", { ogImageUrl: process.env.OG_IMAGE_URL?.replace("{tokenId}", getTokenId(req.params.name)) })
         }); 
 

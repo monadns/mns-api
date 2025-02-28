@@ -8,7 +8,7 @@ COPY tsconfig.json ./
 RUN yarn install
 
 COPY src ./src
-RUN yarn build && yarn add cors
+RUN yarn global add typescript && yarn build && yarn add cors
 
 EXPOSE 3000
 

@@ -12,10 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Server = void 0;
+exports.getTokenId = exports.Server = void 0;
 const express_1 = __importDefault(require("express"));
 const httpcodes_1 = require("./httpcodes");
 const ejs_1 = __importDefault(require("ejs"));
+const ethers_1 = require("ethers");
 class Server {
     constructor(options) {
         this.app = (0, express_1.default)();
@@ -24,16 +25,25 @@ class Server {
     }
     start() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.app.locals.ogImageUrl = null;
             this.app.use(express_1.default.json());
-            this.app.use(express_1.default.static('dist'));
+            this.app.use(express_1.default.urlencoded({ extended: true }));
             this.app.set("trust proxy", true);
             this.app.engine('html', ejs_1.default.renderFile);
             this.app.set('view engine', 'html');
-            this.app.set('views', './');
-            this.app.use(express_1.default.urlencoded({ extended: true }));
-            this.app.use("/", (req, res) => {
+            this.app.set('views', 'dist');
+            this.app.use("/", (req, res, next) => {
+                if (req.url != "/")
+                    return next();
                 res.render("index", {});
             });
+            this.app.use("/:name.mon", (req, res, next) => {
+                var _a;
+                console.log(req.params.name);
+                console.log((0, exports.getTokenId)(req.params.name));
+                res.render("index", { ogImageUrl: (_a = process.env.OG_IMAGE_URL) === null || _a === void 0 ? void 0 : _a.replace("{tokenId}", (0, exports.getTokenId)(req.params.name)) });
+            });
+            this.app.use(express_1.default.static('dist'));
             this.app.use((req, res, next) => {
                 res.status(httpcodes_1.HttpCode.NOT_FOUND).send({ errors: [{ message: "Not found" }] });
             });
@@ -48,3 +58,9 @@ class Server {
     }
 }
 exports.Server = Server;
+const getTokenId = (label) => {
+    const labelHash = ethers_1.ethers.keccak256(ethers_1.ethers.toUtf8Bytes(label));
+    const tokenId = ethers_1.ethers.toBigInt(labelHash).toString();
+    return tokenId;
+};
+exports.getTokenId = getTokenId;

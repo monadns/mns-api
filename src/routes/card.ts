@@ -7,8 +7,9 @@ const fs = require("fs");
 const router = Express.Router();
 const path = require('path');
 
-const fontPath =  path.join((env.NODE_ENV === 'development' ? 'src' : 'build'), 'assets/font');
-const fontSatoshiBold = importFont(path.join(fontPath, "Satoshi-Bold.ttf"), 'font/truetype'); 
+const fontDir =  path.join((env.NODE_ENV === 'development' ? 'src' : 'build'), 'assets/font');
+const fontFile = path.join(fontDir, "Ubuntu-Bold.ttf");
+const fontUrl = importFont(fontFile, 'font/truetype'); 
 
 router.get("/", async (req: Request, res: Response) => {
     const name = req.query.name?.toString() || "";
@@ -22,11 +23,7 @@ router.get("/", async (req: Request, res: Response) => {
         .writeHead(200, {
         'Content-Type': 'image/jpeg',
         'Content-Length': jpegBuffer.length,
-        }).end(jpegBuffer);
-
-       
-    
-
+        }).end(jpegBuffer); 
 });
  
 export const obscureName = (name: string, len: number) => {
@@ -71,7 +68,14 @@ export function createCardSvg(name: string) {
         fill="white"
         filter="url(#dropShadow)">#${getTokenId(name)} </text>
       <defs>
-         
+      <style type="text/css">
+        @font-face { 
+          font-family: "Ubuntu";
+          font-style: bold;
+          font-weight: 600 900;
+          src: url(${fontUrl});
+        }
+      </style>
       <style>
         text {
           font-family: 'Ubuntu', 'Noto Color Emoji', 'Apple Color Emoji', sans-serif;

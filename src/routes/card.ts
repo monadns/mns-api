@@ -59,34 +59,16 @@ export function createCardSvg(name: string) {
       </filter>
     </defs> 
   <text
-        x="1130" 
+        x="1110" 
         y="30" 
-        font-size="1em"
-        fill="white"
-        filter="url(#dropShadow)"> ${"Monad"} </text>
-    <text
-        x="400" 
-        y="250" 
-        font-size="4.1em"
+        font-size="20"
         font-weight="bold"
-        fill="white"
-        filter="url(#dropShadow)">${obscureName(name.split(".").shift() || "", 23)}.mon</text>
+        font-family="Ubuntu"
+        font-style="bold"
+        fill="white"> ${"Monad"} </text>
     
-      <defs>
-      <style type="text/css">
-        @font-face { 
-          font-family: "Satoshi";
-          src: url(${fontUrl});
-        }
-      </style>
-      <style>
-        text {
-          font-family: 'Satoshi';
-          font-style: bold;
-        }
-      </style>
-      </defs>
-      
+    
+     
   <g opacity="0.63">
   <mask id="mask0_0_1" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="24" y="156" width="351" height="345">
   <rect opacity="0.46" x="24" y="156" width="350.679" height="345" fill="url(#pattern0_0_1)"/>
@@ -95,10 +77,24 @@ export function createCardSvg(name: string) {
   <rect x="-102.358" y="114.827" width="567.901" height="458.58" fill="#B1A4F2"/>
   </g>
   </g>  
+
+  <text
+        x="400" 
+        y="250" 
+        font-size="60"
+        font-weight="bold"
+        font-family="Ubuntu"
+        font-style="bold"
+        fill="white"
+        filter="url(#dropShadow)">${obscureName(name.split(".").shift() || "", 16)}.mon</text>
+        
   <text
         x="24" 
         y="600" 
-        font-size="1.5em"
+        font-size="25"
+        font-weight="bold"
+        font-family="Ubuntu"
+        font-style="bold"
         fill="white" >#${getTokenId(name)} </text>
 
   <rect x="28.0645" y="17.0159" width="9.86734" height="51.968" fill="white"/>

@@ -40,7 +40,7 @@ export class Server {
  
         this.app.use((req: Request, res: Response, next: NextFunction ) => {
             res.status(HttpCode.NOT_FOUND).render("index", { 
-                ogImageUrl: process.env.OG_IMAGE_URL?.replace("{tokenId}", getTokenId(req.params.name)) 
+                ogImageUrl: "/api/card/"+ req.params.name
             });
         })
 

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./build/app.js",
     "dev": "ts-node-dev --transpile-only  ./src/app.ts",
-    "build": "tsc && cpx 'src/assets/**' 'build/assets'"
+    "build": "tsc && cp -r ./src/assets/* ./build/assets"
   },
   "repository": {
     "type": "git",

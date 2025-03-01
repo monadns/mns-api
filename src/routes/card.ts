@@ -12,6 +12,7 @@ const fontSatoshiBold = importFont(path.join(fontPath, "Satoshi-Bold.ttf"), 'fon
 router.get("/:name", async (req: Request, res: Response) => {
     const base64 = base64EncodeUnicode(createCardSvg(req.params.name)) 
     const buffer = Buffer.from(base64, 'base64');
+    
     res
         .writeHead(200, {
         'Content-Type': 'image/svg+xml',

@@ -8,22 +8,32 @@ const router = Express.Router();
 const path = require('path');
 
 const fontDir =  path.join((env.NODE_ENV === 'development' ? 'src' : 'build'), 'assets/font');
-const fontFile = path.join(fontDir, "Ubuntu-Bold.ttf");
+const fontFile = path.join(fontDir, "Satoshi-Bold.ttf");
 const fontUrl = importFont(fontFile, 'font/truetype'); 
 
 router.get("/", async (req: Request, res: Response) => {
     const name = req.query.name?.toString() || "";
+    const type = req.query.type?.toString() || "svg";
     let width = parseInt(req.query.width?.toString() || "1200");
-    if(width > 1200) width = 1200;
+    if(width > 1200) width = 1200; 
 
     const base64 = base64EncodeUnicode(createCardSvg(name)) 
     const buffer = Buffer.from(base64, 'base64');
-    const jpegBuffer = await sharp(buffer).resize().jpeg({ mozjpeg: true }).toBuffer()
-    res
-        .writeHead(200, {
-        'Content-Type': 'image/jpeg',
-        'Content-Length': jpegBuffer.length,
-        }).end(jpegBuffer); 
+  
+    if(type == "jpeg") {
+      const jpeg = await sharp(buffer).jpeg({ quality: 100 }).toBuffer()
+      res
+          .writeHead(200, {
+          'Content-Type': 'image/webp',
+          'Content-Length': jpeg.length,
+          }).end(jpeg); 
+    } else {
+      res
+          .writeHead(200, {
+          'Content-Type': 'image/svg+xml',
+          'Content-Length': buffer.length,
+          }).end(buffer);
+    }
 });
  
 export const obscureName = (name: string, len: number) => {
@@ -61,31 +71,18 @@ export function createCardSvg(name: string) {
         font-weight="bold"
         fill="white"
         filter="url(#dropShadow)">${obscureName(name.split(".").shift() || "", 23)}.mon</text>
-    <text
-        x="24" 
-        y="600" 
-        font-size="2em"
-        fill="white"
-        filter="url(#dropShadow)">#${getTokenId(name)} </text>
+    
       <defs>
       <style type="text/css">
         @font-face { 
-          font-family: "Ubuntu";
-          font-style: bold;
-          font-weight: 600 900;
+          font-family: "Satoshi";
           src: url(${fontUrl});
         }
       </style>
       <style>
         text {
-          font-family: 'Ubuntu', 'Noto Color Emoji', 'Apple Color Emoji', sans-serif;
-          font-style: normal;
-          font-variant-numeric: tabular-nums;
-          font-weight: bold;
-          font-variant-ligatures: none;
-          font-feature-settings: "ss01" on, "ss03" on;
-          -moz-font-feature-settings: "ss01" on, "ss03" on;
-          line-height: 34px;
+          font-family: 'Satoshi';
+          font-style: bold;
         }
       </style>
       </defs>
@@ -97,7 +94,13 @@ export function createCardSvg(name: string) {
   <g mask="url(#mask0_0_1)">
   <rect x="-102.358" y="114.827" width="567.901" height="458.58" fill="#B1A4F2"/>
   </g>
-  </g> 
+  </g>  
+  <text
+        x="24" 
+        y="600" 
+        font-size="1.5em"
+        fill="white" >#${getTokenId(name)} </text>
+
   <rect x="28.0645" y="17.0159" width="9.86734" height="51.968" fill="white"/>
   <rect x="28.0645" y="17.0159" width="21.3792" height="9.86734" fill="white"/>
   <rect x="28.0645" y="59.1167" width="21.3792" height="9.86734" fill="white"/>

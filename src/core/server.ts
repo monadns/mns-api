@@ -36,12 +36,14 @@ export class Server {
             res.render("index", { ogImageUrl: process.env.OG_DEFAULT_IMAGE_URL })
         }); 
 
+        this.app.use("/:name.mon", (req: Request, res: Response, next: NextFunction ) => {
+            res.render("index", { ogImageUrl: "https://app.monadns.com/api/card?name="+ req.query.name })
+        }); 
+
         this.app.use(Express.static('dist'));
  
         this.app.use((req: Request, res: Response, next: NextFunction ) => {
-            res.status(HttpCode.NOT_FOUND).render("index", { 
-                ogImageUrl: "/api/card/"+ req.params.name
-            });
+            res.status(HttpCode.NOT_FOUND).render("index");
         })
 
         this.app.use((error: Error, req: Request, res: Response, next: NextFunction ) => {

@@ -9,10 +9,10 @@ const path = require('path');
 const fontPath =  path.join((env.NODE_ENV === 'development' ? 'src' : 'build'), 'assets/font');
 const fontSatoshiBold = importFont(path.join(fontPath, "Satoshi-Bold.ttf"), 'font/truetype'); 
 
-router.get("/:name", async (req: Request, res: Response) => {
-    const base64 = base64EncodeUnicode(createCardSvg(req.params.name)) 
+router.get("/", async (req: Request, res: Response) => {
+    const name = req.query.name?.toString() || "";
+    const base64 = base64EncodeUnicode(createCardSvg(name)) 
     const buffer = Buffer.from(base64, 'base64');
-    
     res
         .writeHead(200, {
         'Content-Type': 'image/svg+xml',

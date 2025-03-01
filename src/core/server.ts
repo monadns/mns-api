@@ -37,7 +37,7 @@ export class Server {
         }); 
 
         this.app.use("/:name.mon", (req: Request, res: Response, next: NextFunction ) => {
-            res.render("index", { ogImageUrl: "https://app.monadns.com/api/card?name="+ req.params.name })
+            res.render("index", { ogImageUrl: "https://app.monadns.com/api/card?name="+ encodeURIComponent(req.params.name) +"&v="+ Date.now() })
         }); 
 
         this.app.use(Express.static('dist'));

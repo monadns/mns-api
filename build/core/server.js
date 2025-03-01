@@ -17,7 +17,6 @@ const express_1 = __importDefault(require("express"));
 const httpcodes_1 = require("./httpcodes");
 const ejs_1 = __importDefault(require("ejs"));
 const card_1 = __importDefault(require("../routes/card"));
-const utils_1 = require("./utils");
 class Server {
     constructor(options) {
         this.app = (0, express_1.default)();
@@ -39,12 +38,12 @@ class Server {
                     return next();
                 res.render("index", { ogImageUrl: process.env.OG_DEFAULT_IMAGE_URL });
             });
+            this.app.use("/:name.mon", (req, res, next) => {
+                res.render("index", { ogImageUrl: "https://app.monadns.com/api/card?name=" + req.query.name });
+            });
             this.app.use(express_1.default.static('dist'));
             this.app.use((req, res, next) => {
-                var _a;
-                res.status(httpcodes_1.HttpCode.NOT_FOUND).render("index", {
-                    ogImageUrl: (_a = process.env.OG_IMAGE_URL) === null || _a === void 0 ? void 0 : _a.replace("{tokenId}", (0, utils_1.getTokenId)(req.params.name))
-                });
+                res.status(httpcodes_1.HttpCode.NOT_FOUND).render("index");
             });
             this.app.use((error, req, res, next) => {
                 res.status(httpcodes_1.HttpCode.INTERNAL_SERVER_ERROR).render("index");

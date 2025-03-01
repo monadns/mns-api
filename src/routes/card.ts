@@ -48,7 +48,7 @@ export function createCardSvg(name: string) {
   <rect width="1200" height="630" fill="url(#paint0_linear_0_1)"/>
   <defs>
       <filter id="dropShadow" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.225" width="100%" height="100%"/>
+        <feDropShadow dx="1" dy="1" stdDeviation="3" flood-opacity="0.5" width="100%" height="100%"/>
       </filter>
     </defs> 
   <text

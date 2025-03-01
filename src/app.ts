@@ -1,7 +1,7 @@
 import {env} from './core/config'
 import { Server } from './core/server'
 
-const server = new Server({ port: env.PORT, apiPrefix: "/api/v2" });
+const server = new Server({ port: env.PORT });
 
 server.start();
 

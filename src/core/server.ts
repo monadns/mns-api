@@ -1,11 +1,11 @@
 import Express, { NextFunction, Request, Response } from "express";
 import { HttpCode } from "./httpcodes";
 import ejs from "ejs";
-import {ethers} from "ethers";
+import cardRouter from "../routes/card";
+import { getTokenId } from "./utils";
 
 interface ServerOptions {
-    port: number,
-    apiPrefix: string
+    port: number
 }
 
 export class Server {
@@ -17,9 +17,9 @@ export class Server {
         this.port = port;   
     }
 
-    async start() : Promise<void> {
+    async start() : Promise<void> { 
 
-    
+        this.app.locals.ogImageUrl = null;
 
         this.app.use(Express.json())
         this.app.use(Express.urlencoded({ extended: true }))
@@ -28,43 +28,29 @@ export class Server {
         this.app.engine('html', ejs.renderFile);
         this.app.set('view engine', 'html');
         this.app.set('views', 'dist');
+
+        this.app.use("/api/card", cardRouter);
   
         this.app.use("/", (req: Request, res: Response, next: NextFunction ) => {
             if(req.url != "/") return next();
-            console.log(req.url);
             res.render("index", { ogImageUrl: process.env.OG_DEFAULT_IMAGE_URL })
         }); 
 
-        this.app.use("/:name.mon", (req: Request, res: Response, next: NextFunction ) => {
-            console.log(req.params.name)
-            console.log(getTokenId(req.params.name))
-            res.render("index", { ogImageUrl: process.env.OG_IMAGE_URL?.replace("{tokenId}", getTokenId(req.params.name)) })
-        }); 
-
-        this.app.use("/register/:name.mon", (req: Request, res: Response, next: NextFunction ) => {
-            res.render("index", { ogImageUrl: process.env.OG_IMAGE_URL?.replace("{tokenId}", getTokenId(req.params.name)) })
-        }); 
-
         this.app.use(Express.static('dist'));
-        
+ 
         this.app.use((req: Request, res: Response, next: NextFunction ) => {
-            res.status(HttpCode.NOT_FOUND).render("index");
+            res.status(HttpCode.NOT_FOUND).render("index", { 
+                ogImageUrl: process.env.OG_IMAGE_URL?.replace("{tokenId}", getTokenId(req.params.name)) 
+            });
         })
 
         this.app.use((error: Error, req: Request, res: Response, next: NextFunction ) => {
             res.status(HttpCode.INTERNAL_SERVER_ERROR).render("index");
         })
-
+ 
         this.app.listen(this.port, ()=> {
             console.log(`Listening port: ${this.port}`);
         })
-    }
-
-    
+    } 
 }
 
-export const getTokenId = (label: string) => {
-    const labelHash = ethers.keccak256(ethers.toUtf8Bytes(label));
-    const tokenId = ethers.toBigInt(labelHash).toString();
-    return tokenId;
-}

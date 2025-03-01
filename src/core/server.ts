@@ -48,12 +48,11 @@ export class Server {
         this.app.use(Express.static('dist'));
         
         this.app.use((req: Request, res: Response, next: NextFunction ) => {
-            res.status(HttpCode.NOT_FOUND).send({ errors: [{ message: "Not found" }] });
+            res.status(HttpCode.NOT_FOUND).render("index");
         })
 
         this.app.use((error: Error, req: Request, res: Response, next: NextFunction ) => {
-            console.log(error)
-            res.status(HttpCode.INTERNAL_SERVER_ERROR).send({ errors: [{ message: "Something went wrong" }] });
+            res.status(HttpCode.INTERNAL_SERVER_ERROR).render("index");
         })
 
         this.app.listen(this.port, ()=> {

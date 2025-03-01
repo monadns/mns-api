@@ -1,7 +1,8 @@
 import Express, {Response, Request} from "express";
 import base64EncodeUnicode, { getTokenId, importFont } from "../core/utils";
 import { env } from "../core/config";
- 
+const sharp = require("sharp")
+
 const fs = require("fs");
 const router = Express.Router();
 const path = require('path');
@@ -11,14 +12,21 @@ const fontSatoshiBold = importFont(path.join(fontPath, "Satoshi-Bold.ttf"), 'fon
 
 router.get("/", async (req: Request, res: Response) => {
     const name = req.query.name?.toString() || "";
+    let width = parseInt(req.query.width?.toString() || "1200");
+    if(width > 1200) width = 1200;
+
     const base64 = base64EncodeUnicode(createCardSvg(name)) 
     const buffer = Buffer.from(base64, 'base64');
+    const jpegBuffer = await sharp(buffer).resize().jpeg({ mozjpeg: true }).toBuffer()
     res
         .writeHead(200, {
-        'Content-Type': 'image/svg+xml',
-        'Content-Length': buffer.length,
-        })
-        .end(buffer); 
+        'Content-Type': 'image/jpeg',
+        'Content-Length': jpegBuffer.length,
+        }).end(jpegBuffer);
+
+       
+    
+
 });
  
 export const obscureName = (name: string, len: number) => {
@@ -34,9 +42,15 @@ export const getLength = (label: string) => {
 }
 
 export function createCardSvg(name: string) {
+
     return `
       <svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <rect width="1200" height="630" fill="url(#paint0_linear_0_1)"/>
+  <defs>
+      <filter id="dropShadow" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+        <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.225" width="100%" height="100%"/>
+      </filter>
+    </defs> 
   <text
         x="1130" 
         y="30" 
@@ -49,25 +63,27 @@ export function createCardSvg(name: string) {
         font-size="4.1em"
         font-weight="bold"
         fill="white"
-        filter="url(#dropShadow)">${obscureName(name.split(".").shift() || "", 15)}.mon</text>
+        filter="url(#dropShadow)">${obscureName(name.split(".").shift() || "", 23)}.mon</text>
     <text
         x="24" 
         y="600" 
-        font-size="1em"
+        font-size="2em"
         fill="white"
         filter="url(#dropShadow)">#${getTokenId(name)} </text>
       <defs>
-        <style type="text/css">
-          @font-face { 
-            font-family: "Roboto";
-            src: url(${fontSatoshiBold});
-          }
-        </style>
-        <style>
-          text {
-            font-family: 'Roboto', 'Noto Color Emoji', 'Apple Color Emoji', sans-serif;
-          }
-        </style>
+         
+      <style>
+        text {
+          font-family: 'Ubuntu', 'Noto Color Emoji', 'Apple Color Emoji', sans-serif;
+          font-style: normal;
+          font-variant-numeric: tabular-nums;
+          font-weight: bold;
+          font-variant-ligatures: none;
+          font-feature-settings: "ss01" on, "ss03" on;
+          -moz-font-feature-settings: "ss01" on, "ss03" on;
+          line-height: 34px;
+        }
+      </style>
       </defs>
       
   <g opacity="0.63">

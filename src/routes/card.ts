@@ -81,7 +81,7 @@ export function createCardSvg(name: string) {
         y="350" 
         font-size="${getFontSize( obscureName(name.split(".").shift() || "", 16) + ".mon") }"
         font-weight="bold"
-        font-family="Ubuntu"
+        font-family="Ubuntu, Noto Color Emoji, Apple Color Emoji, sans-serif"
         font-style="bold"
         fill="white"
         filter="url(#dropShadow)">${obscureName(name.split(".").shift() || "", 16)}.mon</text>

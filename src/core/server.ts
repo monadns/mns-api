@@ -38,6 +38,10 @@ export class Server {
             res.render("index", { ogImageUrl: process.env.OG_DEFAULT_IMAGE_URL })
         }); 
 
+        this.app.use(["/name/:name.mon", "/name/:name"], (req: Request, res: Response, next: NextFunction ) => {
+            res.redirect(301, `/${req.params.name.replace(".mon", "")}.mon`)
+        });
+
         this.app.use("/:name.mon", (req: Request, res: Response, next: NextFunction ) => {
             res.render("index", { ogImageUrl: "https://app.monadns.com/api/card?name="+ encodeURIComponent(req.params.name) +"&v="+ Date.now() })
         }); 

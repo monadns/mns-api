@@ -13,7 +13,7 @@ const fontUrl = importFont(fontFile, 'font/truetype');
 
 router.get("/", async (req: Request, res: Response) => {
     const name = req.query.name?.toString() || "";
-    const type = req.query.type?.toString() || "svg";
+    const type = req.query.type?.toString() || "jpeg";
     let width = parseInt(req.query.width?.toString() || "1200");
     if(width > 1200) width = 1200; 
 
@@ -65,10 +65,7 @@ export function createCardSvg(name: string) {
         font-weight="bold"
         font-family="Ubuntu"
         font-style="bold"
-        fill="white"> ${"Monad"} </text>
-    
-    
-     
+        fill="white"> ${"Monad"} </text> 
   <g opacity="0.63">
   <mask id="mask0_0_1" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="24" y="156" width="351" height="345">
   <rect opacity="0.46" x="24" y="156" width="350.679" height="345" fill="url(#pattern0_0_1)"/>
@@ -87,7 +84,7 @@ export function createCardSvg(name: string) {
         font-style="bold"
         fill="white"
         filter="url(#dropShadow)">${obscureName(name.split(".").shift() || "", 16)}.mon</text>
-        
+
   <text
         x="24" 
         y="600" 

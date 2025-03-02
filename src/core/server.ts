@@ -24,6 +24,8 @@ export class Server {
         this.app.use(Express.json())
         this.app.use(Express.urlencoded({ extended: true }))
 
+        ejs.delimiter = '?';
+    
         this.app.set("trust proxy", true);
         this.app.engine('html', ejs.renderFile);
         this.app.set('view engine', 'html');

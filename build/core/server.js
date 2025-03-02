@@ -39,7 +39,7 @@ class Server {
                 res.render("index", { ogImageUrl: process.env.OG_DEFAULT_IMAGE_URL });
             });
             this.app.use("/:name.mon", (req, res, next) => {
-                res.render("index", { ogImageUrl: "https://app.monadns.com/api/card?name=" + req.query.name });
+                res.render("index", { ogImageUrl: "https://app.monadns.com/api/card?name=" + encodeURIComponent(req.params.name) + "&v=" + Date.now() });
             });
             this.app.use(express_1.default.static('dist'));
             this.app.use((req, res, next) => {

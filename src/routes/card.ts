@@ -1,6 +1,7 @@
 import Express, {Response, Request} from "express";
 import base64EncodeUnicode, { getTokenId, importFont } from "../core/utils";
 import { env } from "../core/config";
+import { createCanvas, registerFont } from "canvas";
 const sharp = require("sharp")
 
 const fs = require("fs");
@@ -21,7 +22,7 @@ router.get("/", async (req: Request, res: Response) => {
     const buffer = Buffer.from(base64, 'base64');
   
     if(type == "jpeg") {
-      const jpeg = await sharp(buffer).jpeg({ quality: 100 }).toBuffer()
+      const jpeg = await sharp(buffer, ).jpeg({ quality: 100, progressive: true }).toBuffer()
       res
           .writeHead(200, {
           'Content-Type': 'image/webp',
@@ -77,8 +78,8 @@ export function createCardSvg(name: string) {
 
   <text
         x="400" 
-        y="250" 
-        font-size="60"
+        y="350" 
+        font-size="${getFontSize( obscureName(name.split(".").shift() || "", 16) + ".mon") }"
         font-weight="bold"
         font-family="Ubuntu"
         font-style="bold"
@@ -114,6 +115,15 @@ export function createCardSvg(name: string) {
   
     `;
 }
-  
+
+export function getFontSize(name: string): number {
+  registerFont(fontFile, { family: 'Ubuntu' });
+  const canvas = createCanvas(1200, 630, 'svg');
+  const context = canvas.getContext('2d'); 
+  context.font = "80px Ubuntu, Noto Color Emoji, Apple Color Emoji, sans-serif"
+  const fontMetrics = context.measureText(name);
+  const fontSize = Math.floor(80 * (700 / fontMetrics.width));
+  return fontSize;
+}
 
 export default router;

@@ -77,10 +77,7 @@ return `
         } 
         `: ""
     }
-        
-    text {
-        font-family: ${jpeg ? "\"'Satoshi', 'Noto Color Emoji', 'sans-serif'\"": "'Satoshi', 'Noto Color Emoji', 'sans-serif'" } ;
-    }  
+         
     </style>
 
     ${jpeg == false && name.length < 4 ? 
@@ -151,17 +148,7 @@ return `
     }
         </style> `: ''
     }
-
-    <text
-    x="1100" 
-    y="40" 
-    font-size="25"
-    font-weight="600"
-    font-style="bold"
-    fill="white"> 
-        ${"Monad"}
-    </text> 
-
+ 
     <g opacity="0.63">
         <mask id="mask0_0_1" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="24" y="156" width="351" height="345">
             <rect opacity="0.46" x="24" y="156" width="350.679" height="345" fill="url(#pattern0_0_1)"/>
@@ -171,6 +158,17 @@ return `
         </g>
     </g>  
 
+    <text
+    x="1100" 
+    y="40" 
+    font-size="25"
+    font-weight="600"
+    font-style="bold"
+    font-family="Satoshi"
+    fill="white"> 
+        ${"Monad"}
+    </text> 
+
     <text id="blink"
     x="400" 
     y="350" 
@@ -178,6 +176,7 @@ return `
     font-weight="600"
     font-style="bold"
     fill="white"
+    font-family="Satoshi"
     filter="url(#dropShadow)">
         ${ obscureName(name.split(".").shift() || "", 16) }.mon
     </text>
@@ -188,6 +187,7 @@ return `
     font-size="25"
     font-weight="600"
     font-style="bold"
+    font-family="Satoshi"
     fill="white">
         #${getTokenId(name)}
     </text>

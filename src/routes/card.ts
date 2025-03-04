@@ -148,7 +148,7 @@ return `
     font-size="25"
     font-weight="900"
     font-style="bold"
-    font-family="Satoshi"
+    font-family="Satoshi Variable"
     fill="white">#${getTokenId(name)}</text>
 
     <text id="blink"

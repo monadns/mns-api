@@ -65,15 +65,18 @@ return `
     </defs> 
 
     <style type="text/css">
-    @font-face { 
-        font-family: "Satoshi";
-        src: url(${satoshiFontUrl});
-    }
+    ${!jpeg ? `
+        @font-face { 
+            font-family: "Satoshi";
+            src: url(${satoshiFontUrl});
+        }
 
-    @font-face { 
-        font-family: "Noto Color Emoji";
-        src: url(${notoFontUrl});
-    } 
+        @font-face { 
+            font-family: "Noto Color Emoji";
+            src: url(${notoFontUrl});
+        } 
+        `: ""
+    }
         
     text {
         font-family: ${jpeg ? "\"'Satoshi', 'Noto Color Emoji', 'sans-serif'\"": "'Satoshi', 'Noto Color Emoji', 'sans-serif'" } ;
@@ -212,10 +215,12 @@ return `
 
 export function getFontSize(name: string): number { 
    
+    registerFont(path.join(__dirname, "../assets/font/Satoshi-Bold.ttf"), { family: 'Satoshi', style: "bold", weight: "600 900" });
+    registerFont(path.join(__dirname, "../assets/font/NotoColorEmoji.ttf"), { family: 'Noto Color Emoji', style: "bold", weight: "600 900" });
 
   const canvas = createCanvas(1200, 630, 'svg');
   const context = canvas.getContext('2d'); 
-  context.font = "80px 'Satoshi', 'Noto Color Emoji', 'sans-serif'"
+  context.font = "80px Satoshi, Noto Color Emoji, sans-serif"
   const fontMetrics = context.measureText(name);
   const fontSize = Math.floor(80 * (700 / fontMetrics.width));
   return fontSize > 150 ? 150 : fontSize;

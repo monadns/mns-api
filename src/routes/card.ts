@@ -207,11 +207,9 @@ export function createCardSvg(name: string, jpeg: boolean) {
 }
 
 export function getFontSize(name: string): number {
-   
   const canvas = createCanvas(1200, 630, 'svg');
   const context = canvas.getContext('2d'); 
   context.font = "80px Satoshi, Noto Color Emoji, Apple Color Emoji, sans-serif"
-  
   const fontMetrics = context.measureText(name);
   const fontSize = Math.floor(80 * (700 / fontMetrics.width));
   return fontSize > 150 ? 150 : fontSize;

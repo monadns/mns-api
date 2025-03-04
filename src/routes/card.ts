@@ -207,9 +207,14 @@ export function createCardSvg(name: string, jpeg: boolean) {
 }
 
 export function getFontSize(name: string): number {
+  
+  registerFont(path.join(__dirname, "../assets/font/Satoshi-Bold.ttf"), { family: 'Satoshi', style: "bold", weight: "600 900" });
+  registerFont(path.join(__dirname, "../assets/font/NotoColorEmoji.ttf"), { family: 'Noto Color Emoji', style: "bold", weight: "600 900" }); 
+  
   const canvas = createCanvas(1200, 630, 'svg');
   const context = canvas.getContext('2d'); 
   context.font = "80px Satoshi, Noto Color Emoji, Apple Color Emoji, sans-serif"
+  
   const fontMetrics = context.measureText(name);
   const fontSize = Math.floor(80 * (700 / fontMetrics.width));
   return fontSize > 150 ? 150 : fontSize;

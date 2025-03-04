@@ -75,10 +75,8 @@ return `
         @font-face { 
             font-family: "Noto Color Emoji";
             src: url(${notoFontUrl});
-        } 
-       
-     
-    
+    }  
+            
     text {
         font-family: 'Ubuntu', 'Noto Color Emoji', 'Sans Serif';
     }  
@@ -159,9 +157,14 @@ return `
     font-size="25"
     font-weight="600"
     font-style="bold"
-    fill="white"> 
-        ${"Monad"}
-    </text> 
+    fill="white">${"Monad"}</text> 
+    <text
+    x="24" 
+    y="600" 
+    font-size="25"
+    font-weight="600"
+    font-style="bold"
+    fill="white">#${getTokenId(name)}</text>
 
     <g opacity="0.63">
         <mask id="mask0_0_1" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="24" y="156" width="351" height="345">
@@ -179,19 +182,7 @@ return `
     font-weight="600"
     font-style="bold"
     fill="white"
-    filter="url(#dropShadow)">
-        ${ obscureName(name.split(".").shift() || "", 16) }.mon
-    </text>
-
-    <text
-    x="24" 
-    y="600" 
-    font-size="25"
-    font-weight="600"
-    font-style="bold"
-    fill="white">
-        #${getTokenId(name)}
-    </text>
+    filter="url(#dropShadow)">${ obscureName(name.split(".").shift() || "", 16) }.mon</text>
  
     <rect x="38.0645" y="27.0159" width="9.86734" height="51.968" fill="white"/>
     <rect x="38.0645" y="27.0159" width="21.3792" height="9.86734" fill="white"/>

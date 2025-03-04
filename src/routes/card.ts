@@ -70,7 +70,7 @@ return `
     font-size="25"
     font-weight="600"
     font-style="bold"
-    font-family="Ubuntu"
+    font-family="Satoshi"
     fill="white">${"Monad"}</text> 
 
     <text
@@ -79,7 +79,7 @@ return `
     font-size="25"
     font-weight="600"
     font-style="bold"
-    font-family="Ubuntu"
+    font-family="Satoshi"
     fill="white">#${getTokenId(name)}</text>
 
     <text id="blink"
@@ -89,7 +89,7 @@ return `
     font-weight="600"
     font-style="bold"
     fill="white"
-    font-family="Ubuntu"
+    font-family="Satoshi"
     filter="url(#dropShadow)">${ obscureName(name.split(".").shift() || "", 16) }.mon</text>
 
     <g opacity="0.63">
@@ -126,7 +126,7 @@ export function getFontSize(name: string): number {
 
   const canvas = createCanvas(1200, 630, 'svg');
   const context = canvas.getContext('2d'); 
-  context.font = "80px 'Satoshi'"
+  context.font = "80px 'Satoshi', 'Noto Color Emoji', 'Sans Serif'"
   const fontMetrics = context.measureText(name);
   const fontSize = Math.floor(80 * (700 / fontMetrics.width));
   console.log(fontSize)

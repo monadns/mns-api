@@ -8,13 +8,13 @@ COPY tsconfig.json ./
 RUN yarn install
 
 COPY src ./src
-RUN yarn global add typescript && yarn build && yarn add cors
-
 
 USER root
+RUN yarn global add typescript && yarn build && yarn add cors
 RUN apt-get update; apt-get install -y fontconfig
-RUN fc-cache -f -v 
+RUN fc-cache -f -v && fc-cache -f -v --really-force
 RUN chmod a+rw -R /home
+RUN chmod a+rw -R /usr/local/app/font
 
 EXPOSE 3000
 

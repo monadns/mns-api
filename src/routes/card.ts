@@ -213,7 +213,7 @@ export function getFontSize(name: string): number {
 
   const canvas = createCanvas(1200, 630, 'svg');
   const context = canvas.getContext('2d'); 
-  context.font = "80px 'Ubuntu', 'Noto Color Emoji', 'sans-serif'"
+  context.font = "80px Satoshi"
   const fontMetrics = context.measureText(name);
   const fontSize = Math.floor(80 * (700 / fontMetrics.width));
   console.log(fontSize)

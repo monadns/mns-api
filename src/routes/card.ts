@@ -217,7 +217,7 @@ export function getFontSize(name: string): number {
   
   const fontMetrics = context.measureText(name);
   const fontSize = Math.floor(80 * (700 / fontMetrics.width));
-  return fontSize > 190 ? 190 : fontSize;
+  return fontSize > 150 ? 150 : fontSize;
 }
 
 export default router;

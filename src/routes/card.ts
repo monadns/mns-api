@@ -9,8 +9,12 @@ const router = Express.Router();
 const path = require('path');
 
 const fontDir =  path.join((env.NODE_ENV === 'development' ? 'src' : 'build'), 'assets/font');
-const fontFile = path.join(fontDir, "Satoshi-Bold.ttf");
-const fontUrl = importFont(fontFile, 'font/truetype'); 
+const satoshiFont = path.join(fontDir, "Satoshi-Bold.ttf");
+const notoFont = path.join(fontDir, "NotoColorEmoji.ttf");
+const appleColor = path.join(fontDir, "AppleColorEmoji.ttc");
+
+const satoshiFontUrl = importFont(satoshiFont, 'font/truetype'); 
+const notoFontUrl = importFont(notoFont, 'font/truetype'); 
 
 router.get("/", async (req: Request, res: Response) => {
     const name = req.query.name?.toString() || "";
@@ -18,7 +22,7 @@ router.get("/", async (req: Request, res: Response) => {
     let width = parseInt(req.query.width?.toString() || "1200");
     if(width > 1200) width = 1200; 
 
-    const base64 = base64EncodeUnicode(createCardSvg(name)) 
+    const base64 = base64EncodeUnicode(createCardSvg(name, (type == "jpeg"))) 
     const buffer = Buffer.from(base64, 'base64');
   
     if(type == "jpeg") {
@@ -49,22 +53,109 @@ export const getLength = (label: string) => {
     return Array.from(label).length;
 }
 
-export function createCardSvg(name: string) {
+export function createCardSvg(name: string, jpeg: boolean) {
 
     return `
       <svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <rect width="1200" height="630" fill="url(#paint0_linear_0_1)"/>
   <defs>
       <filter id="dropShadow" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="1" dy="1" stdDeviation="3" flood-opacity="0.5" width="100%" height="100%"/>
+        <feDropShadow dx="0" dy="0" stdDeviation="4" flood-opacity="0.2"/>
       </filter>
     </defs> 
+
+    <style type="text/css">
+      @font-face { 
+        font-family: "Satoshi";
+        src: url(${satoshiFontUrl});
+      }
+
+      @font-face { 
+        font-family: "Noto Color Emoji";
+        src: url(${notoFontUrl});
+      } 
+        
+      text {
+        font-family: 'Satoshi';
+      } 
+ 
+  </style>
+
+  ${jpeg == false && name.length < 4 ? 
+    `<style type="text/css"> 
+    svg text#blink {
+      animation: stroke 5s infinite alternate;
+      stroke-width: 1;
+      stroke: #c17efc;
+      fill: #b05cf9;
+  }
+
+  @keyframes stroke {
+      0% {
+          stroke: #8F7CF7;
+          fill: #ffffff;
+          stroke-dashoffset: 25%;
+          stroke-dasharray: 0 50%;
+          stroke-width: 0.8;
+      }
+
+      50% {
+          fill: #ffffff;
+          fill: #8F7CF7;
+      }
+
+      80% {
+          fill: rgba(255, 255, 255, 0.8); 
+          stroke: rgba(255, 255, 255, 1); 
+          stroke-width: 0.8;
+      }
+
+      100% {
+          fill: rgba(255, 255, 255, 1); 
+          stroke: rgba(255, 255, 255, 0);
+          stroke-dashoffset: -25%;
+          stroke-dasharray: 50% 0;
+          stroke-width: 0;
+      }
+  }
+
+  @keyframes ailogo {
+      0% {
+          fill: rgb(254, 217, 16);  
+          stroke: rgb(254, 217, 16);  
+          stroke-dashoffset: 25%;
+          stroke-dasharray: 0 50%;
+          stroke-width: 0.3;
+      }
+
+      50% {
+          fill: rgba(255, 255, 255, 0.5);
+          stroke: rgba(255, 255, 255, 1); 
+      }
+
+      80% {
+          fill: rgba(255, 255, 255, 0.8);
+          stroke: rgba(255, 255, 255, 1); 
+          stroke-width: 0.7;
+      }
+
+      100% {
+          fill: rgba(255, 255, 255, 1); 
+          stroke: rgba(255, 255, 255, 0);
+          stroke-dashoffset: -25%;
+          stroke-dasharray: 50% 0;
+          stroke-width: 0;
+      }
+  }
+  </style> `: ''
+
+  }
+
   <text
         x="1110" 
         y="30" 
         font-size="20"
-        font-weight="bold"
-        font-family="Ubuntu"
+        font-weight="600"
         font-style="bold"
         fill="white"> ${"Monad"} </text> 
   <g opacity="0.63">
@@ -76,25 +167,24 @@ export function createCardSvg(name: string) {
   </g>
   </g>  
 
-  <text
+  <text id="blink"
         x="400" 
         y="350" 
         font-size="${getFontSize( obscureName(name.split(".").shift() || "", 16) + ".mon") }"
-        font-weight="bold"
-        font-family="Ubuntu, Noto Color Emoji, Apple Color Emoji, sans-serif"
+        font-weight="600"
         font-style="bold"
         fill="white"
-        filter="url(#dropShadow)">${obscureName(name.split(".").shift() || "", 16)}.mon</text>
+        filter="url(#dropShadow)">${ obscureName(name.split(".").shift() || "", 16) }.mon</text>
 
   <text
         x="24" 
         y="600" 
         font-size="25"
-        font-weight="bold"
-        font-family="Ubuntu"
+        font-weight="600"
         font-style="bold"
-        fill="white" >#${getTokenId(name)} </text>
-
+        fill="white"
+        >#${getTokenId(name)}</text>
+ 
   <rect x="28.0645" y="17.0159" width="9.86734" height="51.968" fill="white"/>
   <rect x="28.0645" y="17.0159" width="21.3792" height="9.86734" fill="white"/>
   <rect x="28.0645" y="59.1167" width="21.3792" height="9.86734" fill="white"/>
@@ -117,13 +207,17 @@ export function createCardSvg(name: string) {
 }
 
 export function getFontSize(name: string): number {
-  registerFont(fontFile, { family: 'Ubuntu' });
+  
+  registerFont(path.join(__dirname, "../assets/font/Satoshi-Bold.ttf"), { family: 'Satoshi', style: "bold", weight: "600 900" });
+  registerFont(path.join(__dirname, "../assets/font/NotoColorEmoji.ttf"), { family: 'Noto Color Emoji', style: "bold", weight: "600 900" });
+
   const canvas = createCanvas(1200, 630, 'svg');
   const context = canvas.getContext('2d'); 
-  context.font = "80px Ubuntu, Noto Color Emoji, Apple Color Emoji, sans-serif"
+  context.font = "80px Satoshi, Noto Color Emoji, Apple Color Emoji, sans-serif"
+  
   const fontMetrics = context.measureText(name);
   const fontSize = Math.floor(80 * (700 / fontMetrics.width));
-  return fontSize;
+  return fontSize > 190 ? 190 : fontSize;
 }
 
 export default router;

@@ -11,8 +11,10 @@ COPY src ./src
 RUN yarn global add typescript && yarn build && yarn add cors
 
 
+USER root
 RUN apt-get update; apt-get install -y fontconfig
 RUN fc-cache -f -v && fc-cache -f -v --really-force
+RUN sudo chmod a+rwx -R /usr/local/app
 
 EXPOSE 3000
 

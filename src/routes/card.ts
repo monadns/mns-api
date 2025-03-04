@@ -145,7 +145,7 @@ return `
     <text
     x="24" 
     y="600" 
-    font-size="25"
+    font-size="23"
     font-weight="900"
     font-style="bold"
     font-family="Satoshi Variable"

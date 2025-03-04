@@ -1,6 +1,5 @@
 import Express, {Response, Request} from "express";
 import base64EncodeUnicode, { getTokenId, importFont } from "../core/utils";
-import { env } from "../core/config";
 import { createCanvas, registerFont } from "canvas";
 const sharp = require("sharp")
 
@@ -8,12 +7,14 @@ const fs = require("fs");
 const router = Express.Router();
 const path = require('path');
 
-const fontDir =  path.join((env.NODE_ENV === 'development' ? 'src' : 'build'), 'assets/font');
-const satoshiFont = path.join(fontDir, "Satoshi-Bold.ttf");
+const fontDir =  path.join(__dirname, '../assets/font');
+//const satoshiFont = path.join(fontDir, "Satoshi-Bold.ttf");
+const ubuntuFont = path.join(fontDir, "Ubuntu-Bold.ttf");
 const notoFont = path.join(fontDir, "NotoColorEmoji.ttf");
-const appleColor = path.join(fontDir, "AppleColorEmoji.ttc");
+//const appleColor = path.join(fontDir, "AppleColorEmoji.ttc");
 
-const satoshiFontUrl = importFont(satoshiFont, 'font/truetype'); 
+//const satoshiFontUrl = importFont(satoshiFont, 'font/truetype'); 
+const ubuntuFontUrl = importFont(ubuntuFont, 'font/truetype'); 
 const notoFontUrl = importFont(notoFont, 'font/truetype'); 
 
 router.get("/", async (req: Request, res: Response) => {
@@ -65,19 +66,22 @@ return `
     </defs> 
 
     <style type="text/css">
-    ${!jpeg ? `
+    
         @font-face { 
-            font-family: "Satoshi";
-            src: url(${satoshiFontUrl});
+            font-family: "Ubuntu";
+            src: url(${ubuntuFontUrl});
         }
 
         @font-face { 
             font-family: "Noto Color Emoji";
             src: url(${notoFontUrl});
         } 
-        `: ""
-    }
-         
+       
+     
+    
+    text {
+        font-family: 'Ubuntu', 'Noto Color Emoji', 'Sans Serif';
+    }  
     </style>
 
     ${jpeg == false && name.length < 4 ? 
@@ -148,7 +152,17 @@ return `
     }
         </style> `: ''
     }
- 
+
+    <text
+    x="1100" 
+    y="40" 
+    font-size="25"
+    font-weight="600"
+    font-style="bold"
+    fill="white"> 
+        ${"Monad"}
+    </text> 
+
     <g opacity="0.63">
         <mask id="mask0_0_1" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="24" y="156" width="351" height="345">
             <rect opacity="0.46" x="24" y="156" width="350.679" height="345" fill="url(#pattern0_0_1)"/>
@@ -158,17 +172,6 @@ return `
         </g>
     </g>  
 
-    <text
-    x="1100" 
-    y="40" 
-    font-size="25"
-    font-weight="600"
-    font-style="bold"
-    font-family="Satoshi"
-    fill="white"> 
-        ${"Monad"}
-    </text> 
-
     <text id="blink"
     x="400" 
     y="350" 
@@ -176,7 +179,6 @@ return `
     font-weight="600"
     font-style="bold"
     fill="white"
-    font-family="Satoshi"
     filter="url(#dropShadow)">
         ${ obscureName(name.split(".").shift() || "", 16) }.mon
     </text>
@@ -187,7 +189,6 @@ return `
     font-size="25"
     font-weight="600"
     font-style="bold"
-    font-family="Satoshi"
     fill="white">
         #${getTokenId(name)}
     </text>
@@ -214,12 +215,13 @@ return `
 }
 
 export function getFontSize(name: string): number { 
-  
+
   const canvas = createCanvas(1200, 630, 'svg');
   const context = canvas.getContext('2d'); 
-  context.font = "80px Satoshi, Noto Color Emoji, sans-serif"
+  context.font = "80px 'Ubuntu', 'Noto Color Emoji', 'sans-serif'"
   const fontMetrics = context.measureText(name);
   const fontSize = Math.floor(80 * (700 / fontMetrics.width));
+  console.log(fontSize)
   return fontSize > 150 ? 150 : fontSize;
 }
 

@@ -12,7 +12,7 @@ COPY src ./src
 USER root
 RUN yarn global add typescript && yarn build && yarn add cors
 RUN apt-get update; apt-get install -y fontconfig
-RUN fc-cache -f -v && fc-cache -f -v --really-force
+RUN fc-cache -f -v --really-force
 RUN chmod a+rw -R /home
 
 EXPOSE 3000

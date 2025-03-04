@@ -68,7 +68,7 @@ return `
     x="1100" 
     y="40" 
     font-size="25"
-    font-weight="600"
+    font-weight="900"
     font-style="bold"
     font-family="Satoshi Variable"
     fill="white">${"Monad"}</text> 
@@ -77,7 +77,7 @@ return `
     x="24" 
     y="600" 
     font-size="25"
-    font-weight="600"
+    font-weight="900"
     font-style="bold"
     font-family="Satoshi"
     fill="white">#${getTokenId(name)}</text>
@@ -86,7 +86,7 @@ return `
     x="400" 
     y="350" 
     font-size="${getFontSize( obscureName(name.split(".").shift() || "", 16) + ".mon") }"
-    font-weight="600"
+    font-weight="900"
     font-style="bold"
     fill="white"
     font-family="Satoshi Variable"

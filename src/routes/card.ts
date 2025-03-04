@@ -76,7 +76,7 @@ return `
     } 
         
     text {
-        font-family: " 'Satoshi', 'Noto Color Emoji', 'sans-serif' ";
+        font-family: ${jpeg ? "\"'Satoshi', 'Noto Color Emoji', 'sans-serif'\"": "'Satoshi', 'Noto Color Emoji', 'sans-serif'" } ;
     }  
     </style>
 
@@ -150,9 +150,9 @@ return `
     }
 
     <text
-    x="1110" 
-    y="30" 
-    font-size="20"
+    x="1100" 
+    y="40" 
+    font-size="25"
     font-weight="600"
     font-style="bold"
     fill="white"> 
@@ -189,12 +189,12 @@ return `
         #${getTokenId(name)}
     </text>
  
-    <rect x="28.0645" y="17.0159" width="9.86734" height="51.968" fill="white"/>
-    <rect x="28.0645" y="17.0159" width="21.3792" height="9.86734" fill="white"/>
-    <rect x="28.0645" y="59.1167" width="21.3792" height="9.86734" fill="white"/>
-    <rect x="79.7036" y="68.9841" width="9.86734" height="51.968" transform="rotate(180 79.7036 68.9841)" fill="white"/>
-    <rect x="79.7036" y="68.9841" width="21.0503" height="9.86734" transform="rotate(180 79.7036 68.9841)" fill="white"/>
-    <rect x="79.7036" y="26.8833" width="21.0503" height="9.86734" transform="rotate(180 79.7036 26.8833)" fill="white"/>
+    <rect x="38.0645" y="27.0159" width="9.86734" height="51.968" fill="white"/>
+    <rect x="38.0645" y="27.0159" width="21.3792" height="9.86734" fill="white"/>
+    <rect x="38.0645" y="69.1167" width="21.3792" height="9.86734" fill="white"/>
+    <rect x="89.7036" y="78.9841" width="9.86734" height="51.968" transform="rotate(180 89.7036 78.9841)" fill="white"/>
+    <rect x="89.7036" y="78.9841" width="21.0503" height="9.86734" transform="rotate(180 89.7036 78.9841)" fill="white"/>
+    <rect x="89.7036" y="36.8833" width="21.0503" height="9.86734" transform="rotate(180 89.7036 36.8833)" fill="white"/>
     <defs>
         <pattern id="pattern0_0_1" patternContentUnits="objectBoundingBox" width="1" height="1">
             <use xlink:href="#image0_0_1" transform="scale(0.00404858 0.00411523)"/>

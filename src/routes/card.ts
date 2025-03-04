@@ -215,8 +215,8 @@ return `
 
 export function getFontSize(name: string): number { 
    
-    registerFont(path.join(__dirname, "../assets/font/Satoshi-Bold.ttf"), { family: 'Satoshi', style: "bold", weight: "600 900" });
-    registerFont(path.join(__dirname, "../assets/font/NotoColorEmoji.ttf"), { family: 'Noto Color Emoji', style: "bold", weight: "600 900" });
+    registerFont(path.join(__dirname, "../assets/font/Satoshi-Bold.ttf"), { family: 'Satoshi' });
+    registerFont(path.join(__dirname, "../assets/font/NotoColorEmoji.ttf"), { family: 'Noto Color Emoji'});
 
   const canvas = createCanvas(1200, 630, 'svg');
   const context = canvas.getContext('2d'); 

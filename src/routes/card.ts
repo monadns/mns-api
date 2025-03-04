@@ -8,12 +8,11 @@ const router = Express.Router();
 const path = require('path');
 
 const fontDir =  path.join(__dirname, '../assets/font');
-//const satoshiFont = path.join(fontDir, "Satoshi-Bold.ttf");
+const satoshiFont = path.join(fontDir, "Satoshi-Bold.ttf");
 const ubuntuFont = path.join(fontDir, "Ubuntu-Bold.ttf");
 const notoFont = path.join(fontDir, "NotoColorEmoji.ttf");
-//const appleColor = path.join(fontDir, "AppleColorEmoji.ttc");
 
-//const satoshiFontUrl = importFont(satoshiFont, 'font/truetype'); 
+const satoshiFontUrl = importFont(satoshiFont, 'font/truetype'); 
 const ubuntuFontUrl = importFont(ubuntuFont, 'font/truetype'); 
 const notoFontUrl = importFont(notoFont, 'font/truetype'); 
 
@@ -61,12 +60,17 @@ return `
     <rect width="1200" height="630" fill="url(#paint0_linear_0_1)"/>
     <defs>
         <filter id="dropShadow" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
-            <feDropShadow dx="0" dy="0" stdDeviation="4" flood-opacity="0.2"/>
+            <feDropShadow dx="1" dy="1" stdDeviation="4" flood-opacity="0.2"/>
         </filter>
     </defs> 
 
     <style type="text/css">
     
+        @font-face { 
+            font-family: "Satoshi";
+            src: url(${satoshiFontUrl});
+        }
+
         @font-face { 
             font-family: "Ubuntu";
             src: url(${ubuntuFontUrl});
@@ -75,11 +79,7 @@ return `
         @font-face { 
             font-family: "Noto Color Emoji";
             src: url(${notoFontUrl});
-    }  
-            
-    text {
-        font-family: 'Ubuntu', 'Noto Color Emoji', 'Sans Serif';
-    }  
+    }   
     </style>
 
     ${jpeg == false && name.length < 4 ? 
@@ -150,21 +150,34 @@ return `
     }
         </style> `: ''
     }
-
+ 
     <text
     x="1100" 
     y="40" 
     font-size="25"
     font-weight="600"
     font-style="bold"
+    font-family="Satoshi"
     fill="white">${"Monad"}</text> 
+
     <text
     x="24" 
     y="600" 
     font-size="25"
     font-weight="600"
     font-style="bold"
+    font-family="Satoshi"
     fill="white">#${getTokenId(name)}</text>
+
+    <text id="blink"
+    x="400" 
+    y="350" 
+    font-size="${getFontSize( obscureName(name.split(".").shift() || "", 16) + ".mon") }"
+    font-weight="600"
+    font-style="bold"
+    fill="white"
+    font-family="Satoshi"
+    filter="url(#dropShadow)">${ obscureName(name.split(".").shift() || "", 16) }.mon</text>
 
     <g opacity="0.63">
         <mask id="mask0_0_1" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="24" y="156" width="351" height="345">
@@ -174,15 +187,6 @@ return `
             <rect x="-102.358" y="114.827" width="567.901" height="458.58" fill="#B1A4F2"/>
         </g>
     </g>  
-
-    <text id="blink"
-    x="400" 
-    y="350" 
-    font-size="${getFontSize( obscureName(name.split(".").shift() || "", 16) + ".mon") }"
-    font-weight="600"
-    font-style="bold"
-    fill="white"
-    filter="url(#dropShadow)">${ obscureName(name.split(".").shift() || "", 16) }.mon</text>
  
     <rect x="38.0645" y="27.0159" width="9.86734" height="51.968" fill="white"/>
     <rect x="38.0645" y="27.0159" width="21.3792" height="9.86734" fill="white"/>
